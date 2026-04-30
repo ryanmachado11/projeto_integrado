@@ -1,0 +1,21 @@
+!SESSION 2026-04-30 08:39:52.444 -----------------------------------------------
+eclipse.buildId=Version 1.5.1
+java.version=1.8.0_272
+java.vendor=AdoptOpenJDK
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\Alunos\Desktop\projeto_integrado
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2026-04-30 08:40:07.154
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-04-30 08:40:07.261
+!MESSAGE Log4j initialized with config file C:\Users\Alunos\Desktop\projeto_integrado\.metadata\.log4j.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-04-30 08:40:10.117
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 4 4 2026-04-30 08:40:11.124
+!MESSAGE com.st.stm32cube.ide.mcu.ide/META-INF/version/build_ref file not found, build reference will not be reported into properties
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-04-30 08:42:50.556
+!MESSAGE Indexed 'projetointegrado' (19 sources, 77 headers) in 4.48 sec: 3,614 declarations; 13,094 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.012%)
