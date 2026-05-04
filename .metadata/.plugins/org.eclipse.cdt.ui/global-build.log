@@ -1,0 +1,7 @@
+09:20:24 **** Incremental Build of configuration Debug for project projetointegrado ****
+make -j4 all 
+arm-none-eabi-size   projetointegrado.elf 
+   text	   data	    bss	    dec	    hex	filename
+   5888	    120	   1680	   7688	   1e08	projetointegrado.elf
+Finished building: default.size.stdout
+ 

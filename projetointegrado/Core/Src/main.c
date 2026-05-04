@@ -95,7 +95,8 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-
+  srand(HAL_GetTick());
+  senha = (rand() % 90) + 10;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,8 +104,6 @@ int main(void)
   while (1)
   {
 	  Entrada();
-
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -239,7 +238,6 @@ int ler_digito(void) {
 	          if (button1 == GPIO_PIN_SET) {
 	              valor = (valor + 1) % 10;
 	          }
-
 	          if (button2 == GPIO_PIN_SET) {
 	              return valor;
 	          }
@@ -247,12 +245,19 @@ int ler_digito(void) {
 	  }
 
 void Entrada(void){
-	  srand(HAL_GetTick());
-	  senha = (rand() % 90) + 10;
-	  int d1 = ler_digito();
-	  int d2 = ler_digito();
-	  senha_usuario = (d1 * 10) + d2;
+	  for (int tentativas = 0; tentativas < 3; tentativas++)
+	     {
+	         int d1 = ler_digito();
+	         int d2 = ler_digito();
 
+	         senha_usuario = (d1 * 10) + d2;
+
+	         if (senha_usuario == senha)
+	         {
+	             return;
+	         }
+	     }
+	     HAL_Delay(5000);
 }
 /* USER CODE END 4 */
 
