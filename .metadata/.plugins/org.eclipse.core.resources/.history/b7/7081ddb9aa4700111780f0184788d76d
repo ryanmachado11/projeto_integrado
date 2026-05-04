@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include <stdlib.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,10 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define button1 HAL_GPIO_ReadPin(BOTAO1_GPIO_Port, BOTAO1_Pin)
-#define button2 HAL_GPIO_ReadPin(BOTAO2_GPIO_Port, BOTAO2_Pin)
-#define button3 HAL_GPIO_ReadPin(BOTAO3_GPIO_Port, BOTAO3_Pin)
-#define button4 HAL_GPIO_ReadPin(BOTAO4_GPIO_Port, BOTAO4_Pin)
+#define BOTAO1 HAL_GPIO_ReadPin(BOTAO1_GPIO_Port, BOTAO1_Pin);
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -47,8 +44,7 @@
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
-int senha;
-int senha_usuario;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -56,8 +52,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
-void Entrada(void);
-int ler_digito(void);
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -102,9 +97,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  Entrada();
-
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -232,28 +224,7 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-int ler_digito(void) {
-	      int valor = 0;
 
-	      while (1) {
-	          if (button1 == GPIO_PIN_SET) {
-	              valor = (valor + 1) % 10;
-	          }
-
-	          if (button2 == GPIO_PIN_SET) {
-	              return valor;
-	          }
-	      }
-	  }
-
-void Entrada(void){
-	  srand(HAL_GetTick());
-	  senha = (rand() % 90) + 10;
-	  int d1 = ler_digito();
-	  int d2 = ler_digito();
-	  senha_usuario = (d1 * 10) + d2;
-
-}
 /* USER CODE END 4 */
 
 /**
