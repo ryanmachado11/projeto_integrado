@@ -1156,3 +1156,7 @@
 2026-05-04 08:12:57,804 [INFO] IPUIPlugin:64 - create IPUIPlugin
 2026-05-04 08:12:57,874 [INFO] LogOutputStream:76 - [STDOUT_REDIRECT] toolchainItems.length=====1
 2026-05-04 08:12:58,093 [INFO] OpenFileManager:294 - Restore cursor
+2026-05-04 09:41:36,043 [INFO] Activator:170 - 
+
+
+2026-05-04 09:41:36,043 [INFO] Activator:171 - !SESSION log4j initialized
