@@ -264,6 +264,7 @@ void Entrada(void){
 	     {
 	         int d1 = ler_digito();
 	         int d2 = ler_digito();
+
 	         senha_usuario = (d1 * 10) + d2;
 
 	         if (senha_usuario == senha)

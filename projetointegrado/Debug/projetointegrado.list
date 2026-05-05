@@ -557,7 +557,6 @@ void Entrada(void){
 	         int d2 = ler_digito();
  800041a:	f7ff ff9b 	bl	8000354 <ler_digito>
  800041e:	6078      	str	r0, [r7, #4]
-
 	         senha_usuario = (d1 * 10) + d2;
  8000420:	68ba      	ldr	r2, [r7, #8]
  8000422:	4613      	mov	r3, r2
