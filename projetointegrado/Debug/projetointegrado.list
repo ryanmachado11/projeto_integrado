@@ -21,29 +21,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   8 .data         00000070  20000000  08001708  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00000090  20000070  08001778  00020070  2**2
+  9 .bss          00000094  20000070  08001778  00020070  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  20000100  08001778  00020100  2**0
+ 10 ._user_heap_stack 00000604  20000104  08001778  00020104  2**0
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  00020070  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00005f7f  00000000  00000000  00020099  2**0
+ 12 .debug_info   00005fc3  00000000  00000000  00020099  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_abbrev 0000129c  00000000  00000000  00026018  2**0
+ 13 .debug_abbrev 000012c5  00000000  00000000  0002605c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 14 .debug_aranges 000005e8  00000000  00000000  000272b8  2**3
+ 14 .debug_aranges 000005f0  00000000  00000000  00027328  2**3
                   CONTENTS, READONLY, DEBUGGING
- 15 .debug_ranges 00000570  00000000  00000000  000278a0  2**3
+ 15 .debug_ranges 00000578  00000000  00000000  00027918  2**3
                   CONTENTS, READONLY, DEBUGGING
- 16 .debug_macro  00015987  00000000  00000000  00027e10  2**0
+ 16 .debug_macro  00015987  00000000  00000000  00027e90  2**0
                   CONTENTS, READONLY, DEBUGGING
- 17 .debug_line   00005389  00000000  00000000  0003d797  2**0
+ 17 .debug_line   0000539d  00000000  00000000  0003d817  2**0
                   CONTENTS, READONLY, DEBUGGING
- 18 .debug_str    00080e11  00000000  00000000  00042b20  2**0
+ 18 .debug_str    00080e1f  00000000  00000000  00042bb4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .comment      0000007b  00000000  00000000  000c3931  2**0
+ 19 .comment      0000007b  00000000  00000000  000c39d3  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000017b0  00000000  00000000  000c39ac  2**2
+ 20 .debug_frame  000017d4  00000000  00000000  000c3a50  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -139,7 +139,7 @@ int main(void)
  8000194:	e7fc      	b.n	8000190 <main+0x44>
  8000196:	bf00      	nop
  8000198:	b60b60b7 	.word	0xb60b60b7
- 800019c:	20000098 	.word	0x20000098
+ 800019c:	2000009c 	.word	0x2000009c
 
 080001a0 <SystemClock_Config>:
 /**
@@ -316,7 +316,7 @@ static void MX_SPI1_Init(void)
  8000286:	bf00      	nop
  8000288:	bd80      	pop	{r7, pc}
  800028a:	bf00      	nop
- 800028c:	200000a0 	.word	0x200000a0
+ 800028c:	200000a4 	.word	0x200000a4
  8000290:	40013000 	.word	0x40013000
 
 08000294 <MX_GPIO_Init>:
@@ -554,8 +554,8 @@ void Entrada(void){
  80003fe:	46bd      	mov	sp, r7
  8000400:	bd80      	pop	{r7, pc}
  8000402:	bf00      	nop
- 8000404:	2000009c 	.word	0x2000009c
- 8000408:	20000098 	.word	0x20000098
+ 8000404:	200000a0 	.word	0x200000a0
+ 8000408:	2000009c 	.word	0x2000009c
 
 0800040c <Error_Handler>:
 /**
@@ -967,7 +967,7 @@ void *_sbrk(ptrdiff_t incr)
  80005a0:	20005000 	.word	0x20005000
  80005a4:	00000400 	.word	0x00000400
  80005a8:	2000008c 	.word	0x2000008c
- 80005ac:	20000100 	.word	0x20000100
+ 80005ac:	20000108 	.word	0x20000108
 
 080005b0 <SystemInit>:
   * @note   This function should be used only after reset.
@@ -1072,7 +1072,7 @@ LoopFillZerobss:
   ldr r2, =_sbss
  80005fc:	20000070 	.word	0x20000070
   ldr r4, =_ebss
- 8000600:	20000100 	.word	0x20000100
+ 8000600:	20000104 	.word	0x20000104
 
 08000604 <ADC1_2_IRQHandler>:
  * @retval : None
@@ -1220,7 +1220,7 @@ __weak void HAL_IncTick(void)
  80006ac:	bc80      	pop	{r7}
  80006ae:	4770      	bx	lr
  80006b0:	20000008 	.word	0x20000008
- 80006b4:	200000f8 	.word	0x200000f8
+ 80006b4:	200000fc 	.word	0x200000fc
 
 080006b8 <HAL_GetTick>:
   * @note  This function is declared as __weak to be overwritten in case of other
@@ -1239,7 +1239,7 @@ __weak uint32_t HAL_GetTick(void)
  80006c2:	46bd      	mov	sp, r7
  80006c4:	bc80      	pop	{r7}
  80006c6:	4770      	bx	lr
- 80006c8:	200000f8 	.word	0x200000f8
+ 80006c8:	200000fc 	.word	0x200000fc
 
 080006cc <HAL_Delay>:
   *       implementations in user file.
@@ -4015,7 +4015,7 @@ HAL_StatusTypeDef HAL_SPI_Init(SPI_HandleTypeDef *hspi)
  80016b6:	b103      	cbz	r3, 80016ba <_sbrk_r+0x1a>
  80016b8:	602b      	str	r3, [r5, #0]
  80016ba:	bd38      	pop	{r3, r4, r5, pc}
- 80016bc:	200000fc 	.word	0x200000fc
+ 80016bc:	20000100 	.word	0x20000100
 
 080016c0 <__malloc_lock>:
  80016c0:	4770      	bx	lr

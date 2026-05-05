@@ -256,7 +256,6 @@ void Entrada(void){
 
 	         if (senha_usuario == senha)
 	         {
-	        	 Alunos();
 	             return;
 	         }
 	     }

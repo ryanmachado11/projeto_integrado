@@ -49,7 +49,6 @@ SPI_HandleTypeDef hspi1;
 /* USER CODE BEGIN PV */
 int senha;
 int senha_usuario;
-int alunos;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -59,7 +58,6 @@ static void MX_SPI1_Init(void);
 /* USER CODE BEGIN PFP */
 void Entrada(void);
 int ler_digito(void);
-void Alunos(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -256,16 +254,10 @@ void Entrada(void){
 
 	         if (senha_usuario == senha)
 	         {
-	        	 Alunos();
 	             return;
 	         }
 	     }
 	     HAL_Delay(5000);
-}
-void Alunos(void){
-	int d1 = ler_digito();
-    int d2 = ler_digito();
-    alunos = (d1 * 10) + d2;
 }
 /* USER CODE END 4 */
 
