@@ -50,9 +50,9 @@ SPI_HandleTypeDef hspi1;
 int senha;
 int senha_usuario;
 int alunos;
-int alunospresentes = 0;
+int alunospresentes;
 int alunosfora =  0;
-int contadorsaida = 0;
+int contadorsaidas;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -301,34 +301,11 @@ void Presenca(void){
 	    }
 	return;
 }
-void ControleSaida(void) {
-    if (button2 == GPIO_PIN_SET && alunosfora < 3) {
-        HAL_Delay(50);
-        if (button2 == GPIO_PIN_SET) {
-            alunosfora++;
-            contadorsaida++;
-            while (button2 == GPIO_PIN_SET);
-            HAL_Delay(50);
-        }
-    }
+void ControleSaida(void){
+	while(button2 == GPIO_PIN_SET && alunosfora < 3){
 
-    if (button3 == GPIO_PIN_SET && alunosfora > 0) {
-        HAL_Delay(50);
-        if (button3 == GPIO_PIN_SET) {
-            alunosfora--;
-            while (button3 == GPIO_PIN_SET);
-            HAL_Delay(50);
-        }
-    }
-
-    if (button1 == GPIO_PIN_SET) {
-        HAL_Delay(50);
-        if (button1 == GPIO_PIN_SET) {
-            while (button1 == GPIO_PIN_SET);
-            HAL_Delay(50);
-            return;
-        }
-    }
+		contadorsaída++;
+	}
 }
 /* USER CODE END 4 */
 

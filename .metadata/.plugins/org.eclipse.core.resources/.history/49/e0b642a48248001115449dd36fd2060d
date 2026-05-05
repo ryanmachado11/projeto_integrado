@@ -52,7 +52,7 @@ int senha_usuario;
 int alunos;
 int alunospresentes = 0;
 int alunosfora =  0;
-int contadorsaida = 0;
+int contadorsaidas = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
