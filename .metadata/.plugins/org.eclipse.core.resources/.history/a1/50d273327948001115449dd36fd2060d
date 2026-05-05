@@ -282,18 +282,15 @@ void Alunos(void){
     return;
 }
 void Presenca(void){
-	while(button2 != GPIO_PIN_SET && alunospresentes < alunos)
-	{
-	        HAL_Delay(200);
-	        int d1 = ler_digito();
-	        int d2 = ler_digito();
-	        int d3 = ler_digito();
-	        int d4 = ler_digito();
-	        int d5 = ler_digito();
-	        int ra = (d1 * 10000) + (d2 * 1000) + (d3 * 100) + (d4 * 10) + d5;
-	        alunospresentes++;
-	    }
-	return;
+	if (button1 =! GPIO_PIN_SET && alunos<alunospresentes){
+	    int d1 = ler_digito();
+	    int d2 = ler_digito();
+	    int d3 = ler_digito();
+	    int d4 = ler_digito();
+	    int d5 = ler_digito();
+	    int ra =  (d1 * 10000) + (d2 * 1000) + (d3 * 100) + (d4 * 10) + d5;
+	    alunospresentes++;
+	}
 }
 /* USER CODE END 4 */
 

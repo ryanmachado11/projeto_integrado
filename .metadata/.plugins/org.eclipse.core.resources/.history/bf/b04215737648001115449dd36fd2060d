@@ -50,7 +50,6 @@ SPI_HandleTypeDef hspi1;
 int senha;
 int senha_usuario;
 int alunos;
-int alunospresentes;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -61,7 +60,6 @@ static void MX_SPI1_Init(void);
 void Entrada(void);
 int ler_digito(void);
 void Alunos(void);
-void Presenca(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -236,28 +234,17 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 int ler_digito(void) {
-    int valor = 0;
+	      int valor = 0;
 
-    while (1) {
-        if (button1 == GPIO_PIN_SET) {
-            HAL_Delay(50);
-            if (button1 == GPIO_PIN_SET) {
-                valor = (valor + 1) % 10;
-                while (button1 == GPIO_PIN_SET);
-                HAL_Delay(50);
-            }
-        }
-
-        if (button2 == GPIO_PIN_SET) {
-            HAL_Delay(50);
-            if (button2 == GPIO_PIN_SET) {
-                while (button2 == GPIO_PIN_SET);
-                HAL_Delay(50);
-                return valor;
-            }
-        }
-    }
-}
+	      while (1) {
+	          if (button1 == GPIO_PIN_SET) {
+	              valor = (valor + 1) % 10;
+	          }
+	          if (button2 == GPIO_PIN_SET) {
+	              return valor;
+	          }
+	      }
+	  }
 
 void Entrada(void){
 	  for (int tentativas = 0; tentativas < 3; tentativas++)
@@ -279,21 +266,6 @@ void Alunos(void){
 	int d1 = ler_digito();
     int d2 = ler_digito();
     alunos = (d1 * 10) + d2;
-    return;
-}
-void Presenca(void){
-	while(button2 != GPIO_PIN_SET && alunospresentes < alunos)
-	{
-	        HAL_Delay(200);
-	        int d1 = ler_digito();
-	        int d2 = ler_digito();
-	        int d3 = ler_digito();
-	        int d4 = ler_digito();
-	        int d5 = ler_digito();
-	        int ra = (d1 * 10000) + (d2 * 1000) + (d3 * 100) + (d4 * 10) + d5;
-	        alunospresentes++;
-	    }
-	return;
 }
 /* USER CODE END 4 */
 
