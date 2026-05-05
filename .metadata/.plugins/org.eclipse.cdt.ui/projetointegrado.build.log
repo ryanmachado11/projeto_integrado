@@ -1,8 +1,8 @@
-10:02:35 **** Incremental Build of configuration Debug for project projetointegrado ****
+13:58:52 **** Incremental Build of configuration Debug for project projetointegrado ****
 make -j4 all 
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F103xB -DDEBUG -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'Presenca':
-../Core/Src/main.c:299:14: warning: unused variable 'ra' [-Wunused-variable]
+../Core/Src/main.c:312:14: warning: unused variable 'ra' [-Wunused-variable]
           int ra = (d1 * 10000) + (d2 * 1000) + (d3 * 100) + (d4 * 10) + d5;
               ^~
 arm-none-eabi-gcc -o "projetointegrado.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\Alunos\Desktop\projeto_integrado\projetointegrado\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="projetointegrado.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
@@ -11,14 +11,14 @@ Finished building target: projetointegrado.elf
 arm-none-eabi-objdump -h -S  projetointegrado.elf  > "projetointegrado.list"
 arm-none-eabi-objcopy  -O binary  projetointegrado.elf  "projetointegrado.bin"
 arm-none-eabi-size   projetointegrado.elf 
-Finished building: projetointegrado.bin
    text	   data	    bss	    dec	    hex	filename
-   6212	    120	   1688	   8020	   1f54	projetointegrado.elf
- 
+   6520	    120	   1696	   8336	   2090	projetointegrado.elf
 Finished building: default.size.stdout
+ 
+Finished building: projetointegrado.bin
  
 Finished building: projetointegrado.list
  
 
-10:02:37 Build Finished. 0 errors, 1 warnings. (took 2s.324ms)
+13:58:53 Build Finished. 0 errors, 1 warnings. (took 906ms)
 

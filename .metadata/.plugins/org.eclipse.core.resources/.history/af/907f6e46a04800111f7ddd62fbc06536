@@ -65,7 +65,6 @@ int ler_digito(void);
 void Alunos(void);
 void Presenca(void);
 void ControleSaida(void);
-void Encerramento(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -111,23 +110,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  Entrada();
 	  if(button1 == GPIO_PIN_SET)
-	  {
-	  	Entrada();
-	  }
-	  if(button2 == GPIO_PIN_SET)
 	  {
 		Presenca();
 	  }
-	  if(button3 == GPIO_PIN_SET)
-	  {
-		ControleSaida();
-	  }
-	  if(button3 == GPIO_PIN_SET && button4 == GPIO_PIN_SET)
-	  {
-        Encerramento();
-	  }
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -311,7 +298,6 @@ void Presenca(void){
 	        int d5 = ler_digito();
 	        int ra = (d1 * 10000) + (d2 * 1000) + (d3 * 100) + (d4 * 10) + d5;
 	        alunospresentes++;
-	        HAL_Delay(200);
 	    }
 	return;
 }
@@ -343,11 +329,6 @@ void ControleSaida(void) {
             return;
         }
     }
-}
-void Encerramento(void)
-{
-	/* exibir na tela as variaveis de alunos totais (alunos presentes) */
-	/* exibir na tela a quantidade de saidas ( variavel contadorsaida ) */
 }
 /* USER CODE END 4 */
 
