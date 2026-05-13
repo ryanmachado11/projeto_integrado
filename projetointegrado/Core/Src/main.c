@@ -22,6 +22,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "st7735.h"
+#include "fonts.h"
+#include <stdio.h>
 #include <stdlib.h>
 /* USER CODE END Includes */
 
@@ -53,6 +56,9 @@ int alunos;
 int alunospresentes = 0;
 int alunosfora =  0;
 int contadorsaida = 0;
+int tela = 0;
+int erros = 0;
+char buffer[32];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -103,31 +109,65 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI1_Init();
   /* USER CODE BEGIN 2 */
-  srand(HAL_GetTick());
-  senha = (rand() % 90) + 10;
+  ST7735_Init();
+  ST7735_FillScreen(BLACK);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(button1 == GPIO_PIN_SET)
-	  {
-	  	Entrada();
-	  }
-	  if(button2 == GPIO_PIN_SET)
-	  {
-		Presenca();
-	  }
-	  if(button3 == GPIO_PIN_SET)
-	  {
-		ControleSaida();
-	  }
-	  if(button3 == GPIO_PIN_SET && button4 == GPIO_PIN_SET)
-	  {
-        Encerramento();
-	  }
+	  if (tela == 0) {
+	      ST7735_WriteString(10, 10, "SISTEMA AULA", Font_7x10, WHITE, BLACK);
+	      ST7735_WriteString(10, 30, "BT1 PARA INICIAR", Font_7x10, YELLOW, BLACK);
 
+	      if(button1 == GPIO_PIN_RESET){
+	    	  tela = 1;
+	    	  ST7735_FillScreen(BLACK);
+	    	  while(button1 == GPIO_PIN_RESET);
+	      }
+	  }
+	  else if (tela == 1) {
+	  	  Entrada();
+	  	  ST7735_FillScreen(BLACK);
+	  }
+	  else if (tela == 3) {
+	          sprintf(buffer, "PRESENTE: %02d/%02d", alunospresentes, alunos);
+	          ST7735_WriteString(5, 10, buffer, Font_7x10, WHITE, BLACK);
+
+	          sprintf(buffer, "BANHEIRO: %d/3", alunosfora);
+	          ST7735_WriteString(5, 25, buffer, Font_7x10, (alunosfora >= 3) ? RED : YELLOW, BLACK);
+
+	          ST7735_WriteString(5, 50, "PA10 - MATRICULA", Font_7x10, GREEN, BLACK);
+	          ST7735_WriteString(5, 65, "PA11 - BANHEIRO", Font_7x10, GREEN, BLACK);
+	          ST7735_WriteString(5, 80, "PA11+12 - ENCERRAR", Font_7x10, MAGENTA, BLACK);
+
+
+	          ST7735_FillRectangle(5, 40, 110, 8, WHITE);
+	          if (alunos > 0) {
+	              int largura = (alunospresentes * 106) / alunos;
+	              ST7735_FillRectangle(6, 41, largura, 6, BLUE);
+	          }
+
+	          if(button3 == GPIO_PIN_SET && button4 == GPIO_PIN_SET)
+	          {
+	              Encerramento();
+	              tela = 4;
+	              ST7735_FillScreen(BLACK);
+	              HAL_Delay(500);
+	          }
+
+	          else if(button2 == GPIO_PIN_SET)
+	          {
+	              Presenca();
+	          }
+
+	          else if(button3 == GPIO_PIN_SET)
+	          {
+	              ControleSaida();
+	          }
+	      }
+     HAL_Delay(100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -249,7 +289,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : BOTAO1_Pin BOTAO2_Pin BOTAO3_Pin BOTAO4_Pin */
   GPIO_InitStruct.Pin = BOTAO1_Pin|BOTAO2_Pin|BOTAO3_Pin|BOTAO4_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
 }
@@ -257,22 +297,26 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 int ler_digito(void) {
     int valor = 0;
-
     while (1) {
-        if (button1 == GPIO_PIN_SET) {
-            HAL_Delay(50);
-            if (button1 == GPIO_PIN_SET) {
+        sprintf(buffer, "%d", valor);
+        ST7735_WriteString(60, 55, buffer, Font_11x18, CYAN, BLACK);
+
+        if (button1 == GPIO_PIN_RESET) {
+            HAL_Delay(100);
+            if (button1 == GPIO_PIN_RESET) {
                 valor = (valor + 1) % 10;
-                while (button1 == GPIO_PIN_SET);
-                HAL_Delay(50);
+                while (button1 == GPIO_PIN_RESET);
+                HAL_Delay(100);
             }
         }
 
-        if (button2 == GPIO_PIN_SET) {
-            HAL_Delay(50);
-            if (button2 == GPIO_PIN_SET) {
-                while (button2 == GPIO_PIN_SET);
-                HAL_Delay(50);
+        if (button2 == GPIO_PIN_RESET) {
+            HAL_Delay(100);
+            if (button2 == GPIO_PIN_RESET) {
+                while (button2 == GPIO_PIN_RESET);
+                HAL_Delay(100);
+
+                ST7735_WriteString(60, 55, " ", Font_11x18, BLACK, BLACK);
                 return valor;
             }
         }
@@ -280,74 +324,193 @@ int ler_digito(void) {
 }
 
 void Entrada(void){
-	  for (int tentativas = 0; tentativas < 3; tentativas++)
-	     {
-	         int d1 = ler_digito();
-	         int d2 = ler_digito();
-	         senha_usuario = (d1 * 10) + d2;
+	for (int tentativas = 0; tentativas < 3; tentativas++) {
 
-	         if (senha_usuario == senha)
-	         {
-	        	 Alunos();
-	             return;
-	         }
-	     }
-	     HAL_Delay(5000);
+		   srand(HAL_GetTick());
+		   senha = (rand() % 90) + 10;
+
+	        ST7735_FillScreen(BLACK);
+	        ST7735_WriteString(10, 10, "DIGITE A SENHA:", Font_7x10, WHITE, BLACK);
+
+	        sprintf(buffer, "TENTATIVA %d/3", tentativas + 1);
+	        ST7735_WriteString(10, 110, buffer, Font_7x10, YELLOW, BLACK);
+
+	        HAL_Delay(2000);
+
+	        int d1 = ler_digito();
+	        ST7735_WriteString(50, 40, "*", Font_11x18, GREEN, BLACK);
+
+	        int d2 = ler_digito();
+	        ST7735_WriteString(65, 40, "*", Font_11x18, GREEN, BLACK);
+
+	        senha_usuario = (d1 * 10) + d2;
+
+	        HAL_Delay(1000);
+	        if(senha_usuario != senha){
+	        	        	ST7735_FillScreen(BLACK);
+	        	            ST7735_WriteString(10, 80, "SENHA INCORRETA", Font_7x10, RED, BLACK);
+	        	            HAL_Delay(2000);
+	        }
+	        if (senha_usuario == senha) {
+	            ST7735_FillScreen(BLACK);
+	            ST7735_WriteString(10, 50, "SENHA CORRETA!", Font_7x10, GREEN, BLACK);
+	            HAL_Delay(3000);
+
+	            Alunos();
+	            ST7735_FillScreen(BLACK);
+	            return;
+	        }
+	    }
+
+	    ST7735_FillScreen(BLACK);
+	    ST7735_WriteString(10, 50, "SISTEMA BLOQUEADO", Font_7x10, RED, BLACK);
+	    ST7735_WriteString(10, 70, "AGUARDE 5 SEGUNDOS", Font_7x10, WHITE, BLACK);
+	    HAL_Delay(5000);
+	    ST7735_FillScreen(BLACK);
 }
-void Alunos(void){
-	int d1 = ler_digito();
+void Alunos(void) {
+    ST7735_FillScreen(BLACK);
+    ST7735_WriteString(10, 10, "CONFIGURAR AULA", Font_7x10, WHITE, BLACK);
+    ST7735_WriteString(10, 30, "LIMITE DE ALUNOS:", Font_7x10, YELLOW, BLACK);
+
+    ST7735_WriteString(10, 55, "Qtd:", Font_11x18, WHITE, BLACK);
+
+    int d1 = ler_digito();
+    ST7735_WriteString(60, 55, "*", Font_11x18, GREEN, BLACK);
+
     int d2 = ler_digito();
+    ST7735_WriteString(75, 55, "*", Font_11x18, GREEN, BLACK);
+
     alunos = (d1 * 10) + d2;
-    return;
+
+    ST7735_WriteString(10, 90, "SALVO COM SUCESSO!", Font_7x10, GREEN, BLACK);
+    HAL_Delay(1000);
+    tela = 3;
 }
 void Presenca(void){
-	while(button2 != GPIO_PIN_SET && alunospresentes < alunos)
-	{
-	        HAL_Delay(200);
-	        int d1 = ler_digito();
-	        int d2 = ler_digito();
-	        int d3 = ler_digito();
-	        int d4 = ler_digito();
-	        int d5 = ler_digito();
-	        int ra = (d1 * 10000) + (d2 * 1000) + (d3 * 100) + (d4 * 10) + d5;
-	        alunospresentes++;
-	        HAL_Delay(200);
-	    }
-	return;
+    ST7735_FillScreen(BLACK);
+    ST7735_WriteString(10, 10, "REGISTRO DE RA", Font_7x10, WHITE, BLACK);
+    ST7735_WriteString(10, 110, "BT2 PARA VOLTAR", Font_7x10, RED, BLACK);
+
+    while(button2 != GPIO_PIN_SET && alunospresentes < alunos)
+    {
+            HAL_Delay(200);
+
+            ST7735_WriteString(10, 30, "DIGITE OS 5 DIGITOS:", Font_7x10, YELLOW, BLACK);
+
+            int d1 = ler_digito();
+            ST7735_WriteString(30, 50, "*", Font_11x18, BLUE, BLACK);
+
+            int d2 = ler_digito();
+            ST7735_WriteString(45, 50, "*", Font_11x18, BLUE, BLACK);
+
+            int d3 = ler_digito();
+            ST7735_WriteString(60, 50, "*", Font_11x18, BLUE, BLACK);
+
+            int d4 = ler_digito();
+            ST7735_WriteString(75, 50, "*", Font_11x18, BLUE, BLACK);
+
+            int d5 = ler_digito();
+            ST7735_WriteString(90, 50, "*", Font_11x18, BLUE, BLACK);
+
+            int ra = (d1 * 10000) + (d2 * 1000) + (d3 * 100) + (d4 * 10) + d5;
+
+            alunospresentes++;
+
+            // Feedback de sucesso
+            ST7735_WriteString(10, 80, "RA REGISTRADO!", Font_7x10, GREEN, BLACK);
+            HAL_Delay(1000);
+
+            // Limpa a área dos asteriscos para o próximo RA se ainda houver vaga
+            ST7735_FillRectangle(30, 50, 80, 20, BLACK);
+            ST7735_FillRectangle(10, 80, 100, 20, BLACK);
+
+            HAL_Delay(200);
+    }
+
+    // Se a sala lotar dentro do while, avisa antes de sair
+    if (alunospresentes >= alunos) {
+        ST7735_FillScreen(BLACK);
+        ST7735_WriteString(10, 50, "SALA LOTADA!", Font_7x10, RED, BLACK);
+        HAL_Delay(1500);
+    }
+
+    // Garante o retorno visual para a tela do menu principal
+    tela = 3;
+    ST7735_FillScreen(BLACK);
+    return;
 }
 void ControleSaida(void) {
-    if (button2 == GPIO_PIN_SET && alunosfora < 3) {
-        HAL_Delay(50);
-        if (button2 == GPIO_PIN_SET) {
-            alunosfora++;
-            contadorsaida++;
-            while (button2 == GPIO_PIN_SET);
-            HAL_Delay(50);
-        }
-    }
+    ST7735_FillScreen(BLACK);
 
-    if (button3 == GPIO_PIN_SET && alunosfora > 0) {
-        HAL_Delay(50);
-        if (button3 == GPIO_PIN_SET) {
-            alunosfora--;
-            while (button3 == GPIO_PIN_SET);
-            HAL_Delay(50);
-        }
-    }
+    // Loop para manter o usuário nesta interface até que ele aperte BT1 para sair
+    while (tela == 3) {
+        ST7735_WriteString(5, 10, "CONTROLE BANHEIRO", Font_7x10, CYAN, BLACK);
+        ST7735_WriteString(5, 110, "BT1: VOLTAR MENU", Font_7x10, RED, BLACK);
 
-    if (button1 == GPIO_PIN_SET) {
-        HAL_Delay(50);
+        // PA11 (button2 no seu code) - Aluno Saindo
+        if (button2 == GPIO_PIN_SET && alunosfora < 3) {
+            HAL_Delay(50);
+            if (button2 == GPIO_PIN_SET) {
+                alunosfora++;
+                contadorsaida++;
+
+                ST7735_WriteString(10, 50, "SAIDA REGISTRADA", Font_7x10, GREEN, BLACK);
+                HAL_Delay(500);
+                ST7735_FillRectangle(10, 50, 120, 20, BLACK); // Limpa mensagem
+
+                while (button2 == GPIO_PIN_SET);
+                HAL_Delay(50);
+            }
+        }
+
+        // PA12? (button3 no seu code) - Aluno Voltando
+        if (button3 == GPIO_PIN_SET && alunosfora > 0) {
+            HAL_Delay(50);
+            if (button3 == GPIO_PIN_SET) {
+                alunosfora--;
+
+                ST7735_WriteString(10, 50, "RETORNO OK", Font_7x10, BLUE, BLACK);
+                HAL_Delay(500);
+                ST7735_FillRectangle(10, 50, 120, 20, BLACK); // Limpa mensagem
+
+                while (button3 == GPIO_PIN_SET);
+                HAL_Delay(50);
+            }
+        }
+
+        // BT1 (button1) - Voltar para o Menu Principal
         if (button1 == GPIO_PIN_SET) {
-            while (button1 == GPIO_PIN_SET);
             HAL_Delay(50);
-            return;
+            if (button1 == GPIO_PIN_SET) {
+                while (button1 == GPIO_PIN_SET);
+                HAL_Delay(50);
+
+                // Força a saída do loop e limpa para o menu
+                ST7735_FillScreen(BLACK);
+                return; // Volta para o while(1) do main
+            }
         }
+
+        // Atualiza o contador continuamente na tela
+        sprintf(buffer, "FORA AGORA: %d/3", alunosfora);
+        ST7735_WriteString(10, 75, buffer, Font_7x10, WHITE, BLACK);
     }
 }
 void Encerramento(void)
 {
-	/* exibir na tela as variaveis de alunos totais (alunos presentes) */
-	/* exibir na tela a quantidade de saidas ( variavel contadorsaida ) */
+	ST7735_FillScreen(BLACK);
+	ST7735_WriteString(10, 10, "RELATORIO FINAL", Font_7x10, CYAN, BLACK);
+
+	 sprintf(buffer, "TOTAL ALUNOS: %d", alunospresentes);
+	 ST7735_WriteString(10, 40, buffer, Font_7x10, WHITE, BLACK);
+
+	 sprintf(buffer, "SAIDAS: %d", contadorsaida);
+	 ST7735_WriteString(10, 60, buffer, Font_7x10, WHITE, BLACK);
+
+	 ST7735_WriteString(10, 100, "AULA ENCERRADA", Font_7x10, RED, BLACK);
+	    // O sistema para aqui ou entra em loop infinito de relatório
+	 while(1);
 }
 /* USER CODE END 4 */
 
