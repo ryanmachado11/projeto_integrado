@@ -1,7 +1,7 @@
 # 🎓 Sistema de Controle de Aula — Projeto Integrado
 
 > Projeto integrado das disciplinas de **Sistemas Embarcados (SEB)** e **Linguagens de Programação (LPR)**  
-> ETE FMC — 3ª Série DS | 2026
+> ETE FMC — 2026
 
 ---
 
